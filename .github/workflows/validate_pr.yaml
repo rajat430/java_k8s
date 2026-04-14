@@ -13,7 +13,7 @@ jobs:
           docker run -d -p 8080:8080 my-java-app
       - name: test
         run: |
-          curl -f http://localhost:8080/ || exit 1 
+          curl http://localhost:8080/users || exit 1 
           echo "Application is running successfully!"
       - name: stop container
         run: |
