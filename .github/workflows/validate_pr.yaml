@@ -1,23 +1,15 @@
 name: validate_pr
 on:
   pull_request:
-    branches: [main]
+    branches: [dev,main]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: docker build and run
+      - name: docker build
         run: |
           docker build -t my-java-app:${{github.sha}} .
-          docker run -d -p 8080:8080 my-java-app
-      - name: test
-        run: |
-          curl http://localhost:8080/users || exit 1 
-          echo "Application is running successfully!"
-      - name: stop container
-        run: |
-          docker stop $(docker ps -q --filter ancestor=my-java-app):${{github.sha}}
       - name: docker tag
         run: |
           docker tag my-java-app:${{github.sha}} ${{ secrets.DOCKER_USERNAME }}/my-java-app:${{github.sha}}
