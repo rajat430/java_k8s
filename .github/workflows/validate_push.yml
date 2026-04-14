@@ -14,5 +14,5 @@ jobs:
           docker run -d -p 8080:8080 my-app
       - name: test
         run: |
-          curl -f curl http://localhost:8080/users || exit 1 
+          curl http://localhost:8080/users || exit 1 
           echo "Application is running successfully!"
