@@ -1,0 +1,39 @@
+name: deploy
+on:
+  pull_request:
+    branches: [dev,main]
+    types: [closed]
+jobs:
+  build:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: docker build
+        run: |
+          docker build -t my-java-app:${{github.sha}} .
+      - name: docker tag
+        run: |
+          docker tag my-java-app:${{github.sha}} ${{ secrets.DOCKER_USERNAME }}/my-java-app:${{github.sha}}
+      - name: docker_push
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin          
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-java-app:${{github.sha}}
+      - name: checkout_manifests
+        uses: actions/checkout@v2
+        with:
+          repository: rajat430/java_k8s_manifests
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: update_image_tag
+        run: |
+          sed -i "s|image: my-java-app:latest|image: ${{ secrets.DOCKER_USERNAME }}/my-java-app:${{github.sha}}|g" deployment.yaml
+
+      - name: commit_and_push
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "
+          git add deployment.yaml
+          git commit -m "Update image tag to ${{ secrets.DOCKER_USERNAME }}/my-java-app:${{github.sha}}"
+          git push origin main 
+          
