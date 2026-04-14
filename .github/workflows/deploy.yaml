@@ -33,7 +33,7 @@ jobs:
       - name: commit_and_push
         run: |
           git config --global user.name "github-actions"
-          git config --global user.email "
+          git config --global user.email "github-actions@github.com"
           git add deployment.yaml
           git commit -m "Update image tag to ${{ secrets.DOCKER_USERNAME }}/my-java-app:${{github.sha}}"
           git push origin main 
