@@ -30,7 +30,7 @@ jobs:
       - name: update_image_tag
         run: |
           ls -R -ltr
-          sed -i "s|image: my-java-app:latest|image: ${{ secrets.DOCKER_USERNAME }}/my-java-app:${{github.sha}}|g" deployment.yaml
+          sed -i "s|image: my-java-app:.*|image: ${{ secrets.DOCKER_USERNAME }}/my-java-app:${{ github.sha }}|g" deployment.yaml
 
       - name: commit_and_push
         run: |
