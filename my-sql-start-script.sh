@@ -1,0 +1,1 @@
+docker run --detach --name mysql-container -p 30306:3306 -e TZ=UTC -e MYSQL_ROOT_PASSWORD=My:S3cr3t ubuntu/mysql:8.0-22.04_edge

@@ -1,0 +1,23 @@
+docker run -d -p 8080:8080 app:1.0.0 --spring.profiles.active=prod 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
