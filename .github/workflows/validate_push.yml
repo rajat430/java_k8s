@@ -13,10 +13,10 @@ jobs:
           docker build -t my-app .
 
       - name: Scan with Trivy
-        continued-on-error: true
         uses: aquasecurity/trivy-action@v0.20.0
         with:
           image-ref: my-app
           format: 'table'
           exit-code: '1'
           severity-threshold: 'HIGH'
+        continue-on-error: true
